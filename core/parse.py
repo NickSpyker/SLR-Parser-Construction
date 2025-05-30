@@ -58,12 +58,23 @@ PRODUCTIONS: List[Production] = [
 ]
 
 
+SMALL_PRODUCTIONS: List[Production] = [
+    Production('S', ('E',)),
+    Production('E', ('E', TokenType.PLUS, 'T')),
+    Production('E', ('T',)),
+    Production('T', ('T', TokenType.MULTIPLY, 'F')),
+    Production('T', ('F',)),
+    Production('F', (TokenType.LEFT_PAREN, 'E', TokenType.RIGHT_PAREN)),
+    Production('F', (TokenType.IDENTIFIER,)),
+]
+
+
 def parse(buffer: str) -> str:
     lexer = Lexer(buffer)
     tokens = lexer.scan()
     if lexer.scan_state == ScanState.FAILURE:
         return Error.build_lexer_error_msg(lexer)
-    cfg = ContextFreeGrammar(start_symbol="Program", productions=PRODUCTIONS)
+    cfg = ContextFreeGrammar(start_symbol="S", productions=SMALL_PRODUCTIONS)
     actions_table = ActionsTable(cfg)
     goto_table = GotoTable(cfg)
-    return ""
+    return f"{actions_table}\n\n{goto_table}"
