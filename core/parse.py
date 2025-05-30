@@ -77,4 +77,4 @@ def parse(buffer: str) -> str:
     cfg = ContextFreeGrammar(start_symbol="S", productions=SMALL_PRODUCTIONS)
     actions_table = ActionsTable(cfg)
     goto_table = GotoTable(cfg)
-    return f"{actions_table}\n\n{goto_table}"
+    return f"GOTO TABLE:\n{goto_table}\n\nACTION TABLE:\n{actions_table}"
