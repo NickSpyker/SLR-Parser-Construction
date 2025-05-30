@@ -1,8 +1,7 @@
 from core.grammar.context_free_grammar import ContextFreeGrammar
 from core.grammar.production import Production
-from core.grammar.actions import ActionsTable
+from core.grammar.actions import ActionsTable, GotoTable
 from core.lexer.lexer import Lexer, ScanState
-from core.grammar.goto import GotoTable
 from core.lexer.token import TokenType
 from core.error.error import Error
 from typing import List
@@ -68,13 +67,23 @@ SMALL_PRODUCTIONS: List[Production] = [
     Production('F', (TokenType.IDENTIFIER,)),
 ]
 
+productions = [
+    ('S', ('E',)),
+    ('E', ('E', '+', 'T')),
+    ('E', ('T',)),
+    ('T', ('T', '*', 'F')),
+    ('T', ('F',)),
+    ('F', ('(', 'E', ')')),
+    ('F', ('id',)),
+]
 
 def parse(buffer: str) -> str:
     lexer = Lexer(buffer)
     tokens = lexer.scan()
     if lexer.scan_state == ScanState.FAILURE:
         return Error.build_lexer_error_msg(lexer)
-    cfg = ContextFreeGrammar(start_symbol="S", productions=SMALL_PRODUCTIONS)
-    actions_table = ActionsTable(cfg)
-    goto_table = GotoTable(cfg)
+    start_symbol = 'E'
+    cfg = ContextFreeGrammar(start_symbol, productions=SMALL_PRODUCTIONS)
+    actions_table = ActionsTable(productions, start_symbol)
+    goto_table = GotoTable(productions, start_symbol)
     return f"GOTO TABLE:\n{goto_table}\n\nACTION TABLE:\n{actions_table}"
