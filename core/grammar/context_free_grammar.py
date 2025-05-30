@@ -1,4 +1,4 @@
-from production import Symbol, Production
+from core.grammar.production import Symbol, Production
 from dataclasses import dataclass
 from typing import List
 

@@ -64,6 +64,6 @@ def parse(buffer: str) -> str:
     if lexer.scan_state == ScanState.FAILURE:
         return Error.build_lexer_error_msg(lexer)
     cfg = ContextFreeGrammar(start_symbol="Program", productions=PRODUCTIONS)
-    goto_table = GotoTable(cfg)
     actions_table = ActionsTable(cfg)
-    return f"{tokens}"
+    goto_table = GotoTable(cfg)
+    return ""
