@@ -1,6 +1,6 @@
-from core.grammar.actions import ActionsTable
 from core.grammar.context_free_grammar import ContextFreeGrammar
 from core.grammar.production import Production
+from core.grammar.actions import ActionsTable
 from core.lexer.lexer import Lexer, ScanState
 from core.grammar.goto import GotoTable
 from core.lexer.token import TokenType
