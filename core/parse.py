@@ -7,5 +7,4 @@ def parse(buffer: str) -> str:
     tokens = lexer.scan()
     if lexer.scan_state == ScanState.FAILURE:
         return Error.build_lexer_error_msg(lexer)
-    print(tokens)
-    return ""
+    return f"{tokens}"

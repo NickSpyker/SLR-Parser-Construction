@@ -1,0 +1,31 @@
+Program             -> DeclList
+
+DeclList            -> Decl DeclList | ε
+Decl                -> VarDecl | FuncDecl
+VarDecl             -> type id ;
+VarDecl             -> type id = Expr ;
+FuncDecl            -> type id ( ParamList ) Block
+ParamList           -> Param , ParamList | Param | ε
+Param               -> type id
+
+Block               -> { StmtList }
+StmtList            -> Stmt StmtList | ε
+Stmt                -> MatchedStmt | UnmatchedStmt
+MatchedStmt         -> if ( Expr ) MatchedStmt else MatchedStmt
+MatchedStmt         -> while ( Expr ) MatchedStmt
+MatchedStmt         -> for ( Expr ; Expr ; Expr ) MatchedStmt
+MatchedStmt         -> return Expr ; | VarDecl | ExprStmt | Block
+UnmatchedStmt       -> if ( Expr ) Stmt
+UnmatchedStmt       -> if ( Expr ) MatchedStmt else UnmatchedStmt
+UnmatchedStmt       -> while ( Expr ) UnmatchedStmt
+UnmatchedStmt       -> for ( Expr ; Expr ; Expr ) UnmatchedStmt
+
+ExprStmt            -> id = Expr ;
+Expr                -> EqualityExpr
+EqualityExpr        -> AdditiveExpr | AdditiveExpr == EqualityExpr
+AdditiveExpr        -> MultiplicativeExpr | AdditiveExpr + MultiplicativeExpr
+MultiplicativeExpr  -> UnaryExpr | MultiplicativeExpr * UnaryExpr
+UnaryExpr           -> - UnaryExpr| PrimaryExpr
+PrimaryExpr         -> id ( ArgList ) | id | num | ( Expr )
+
+ArgList             -> Expr , ArgList | Expr | ε
